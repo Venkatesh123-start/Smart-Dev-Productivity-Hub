@@ -123,3 +123,59 @@ footer {
   font-size: 1.1rem;
   color: #222;
 }
+
+#explain-form {
+  margin-bottom: 24px;
+}
+#explain-form textarea {
+  width: 100%;
+  margin-bottom: 8px;
+  font-family: monospace;
+}
+#explain-form button {
+  padding: 10px 24px;
+  background: #10b981;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+#explain-form button:hover {
+  background: #059669;
+}
+#explain-result {
+  font-size: 1.1rem;
+  color: #222;
+}
+
+#productivity-tip {
+  box-shadow: 0 2px 8px rgba(99, 102, 241, 0.08);
+}
+#recent-snippets {
+  list-style: none;
+  padding: 0;
+}
+#recent-snippets li {
+  background: #f3f4f6;
+  border-radius: 6px;
+  margin-bottom: 10px;
+  padding: 10px;
+  font-size: 0.95rem;
+}
+#recent-snippets pre {
+  margin: 0 0 4px 0;
+  background: #e0e7ff;
+  padding: 6px;
+  border-radius: 4px;
+  overflow-x: auto;
+}
+
+#analytics-section {
+  max-width: 600px;
+}
+#analytics-summary {
+  font-size: 1.1rem;
+  margin-top: 16px;
+}
