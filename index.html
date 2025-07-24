@@ -28,7 +28,15 @@
 
     <!-- Main Content Area -->
     <main class="main-content">
-      <section id="home-section">Home Content Here</section>
+      <section id="home-section">
+  	  <h2>Welcome to Smart Dev Productivity Hub!</h2>
+          <div id="productivity-tip" style="margin: 24px 0; background: #fff; border-radius: 8px; padding: 16px; min-height: 60px; font-size: 1.1rem;"></div>
+          <button id="next-tip" style="padding: 8px 20px; background: #6366f1; color: #fff; border: none; border-radius: 6px; font-size: 1rem; cursor: pointer;">Show Next Tip</button>
+          <div style="margin-top: 32px;">
+          	<h3>Recent Snippets</h3>
+          	<ul id="recent-snippets"></ul>
+          </div>
+      </section>
       <section id="snippets-section" style="display:none;">
           <h2>Snippet Manager</h2>
               <form id="snippet-form">
@@ -37,17 +45,29 @@
                   <label for="snippet-tags">Tags (comma-separated):</label><br>
                   <input type="text" id="snippet-tags" placeholder="e.g. python, api, bugfix"><br>
                   <button type="submit">Add Snippet</button>
-               </form>
-           <h3>Saved Snippets</h3>
-           <ul id="snippet-list"></ul>
+              </form>
+          <h3>Saved Snippets</h3>
+          <ul id="snippet-list"></ul>
       </section>
       <section id="standup-section" style="display:none;">
-            <h2>AI Stand-up Generator</h2>
-                <button id="generate-standup">Generate Today’s Stand-up Summary</button>
-                <div id="standup-result" style="margin-top:20px; background:#fff; border-radius:8px; padding:16px; min-height:60px;"></div>
+              <h2>AI Stand-up Generator</h2>
+                  <button id="generate-standup">Generate Today’s Stand-up Summary</button>
+                  <div id="standup-result" style="margin-top:20px; background:#fff; border-radius:8px; padding:16px; min-height:60px;"></div>
       </section>
-      <section id="analytics-section" style="display:none;">Analytics Content Here</section>
-      <section id="askai-section" style="display:none;">Ask AI Content Here</section>
+      <section id="analytics-section" style="display:none;">
+  	      <h2>Analytics</h2>
+  		  <canvas id="snippets-chart" width="400" height="200"></canvas>
+  		  <div id="analytics-summary" style="margin-top:20px;"></div>
+      </section>
+      <section id="askai-section" style="display:none;">
+  	      <h2>Code Explainer & Commenter</h2>
+        	  <form id="explain-form">
+                     <label for="explain-code">Paste your code here:</label><br>
+                     <textarea id="explain-code" rows="4" cols="50" required></textarea><br>
+                     <button type="submit">Explain Code</button>
+                  </form>
+              <div id="explain-result" style="margin-top:20px; background:#fff; border-radius:8px; padding:16px; min-height:60px;"></div>
+      </section>
     </main>
 
     <!-- Footer -->
