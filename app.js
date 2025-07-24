@@ -56,3 +56,30 @@ snippetForm.addEventListener('submit', function(e) {
 
 // Initial load
 loadSnippets();
+
+// AI Stand-up Generator Logic
+const generateStandupBtn = document.getElementById('generate-standup');
+const standupResult = document.getElementById('standup-result');
+
+function generateStandupSummary() {
+  // Get today's snippets (simulate by using all snippets for now)
+  const snippets = JSON.parse(localStorage.getItem('snippets') || '[]');
+  if (snippets.length === 0) {
+    standupResult.textContent = "No coding activity found for today.";
+    return;
+  }
+
+  // Simulate prompt engineering & LLM summary
+  let summary = "📝 **Today's Stand-up Summary:**\n";
+  summary += `• You worked on ${snippets.length} code snippet${snippets.length > 1 ? 's' : ''} today.\n`;
+  const tags = [...new Set(snippets.flatMap(s => s.tags))].filter(Boolean);
+  if (tags.length) {
+    summary += `• Main topics: ${tags.join(', ')}.\n`;
+  }
+  summary += "• Keep up the great work! 🚀";
+
+  // Display summary (formatting for HTML)
+  standupResult.innerHTML = summary.replace(/\n/g, '<br>');
+}
+
+generateStandupBtn.addEventListener('click', generateStandupSummary);
