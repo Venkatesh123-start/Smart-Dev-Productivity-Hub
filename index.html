@@ -29,7 +29,18 @@
     <!-- Main Content Area -->
     <main class="main-content">
       <section id="home-section">Home Content Here</section>
-      <section id="snippets-section" style="display:none;">Snippet Manager Content Here</section>
+      <section id="snippets-section" style="display:none;">
+          <h2>Snippet Manager</h2>
+              <form id="snippet-form">
+                  <label for="snippet-code">Code Snippet:</label><br>
+                  <textarea id="snippet-code" rows="4" cols="50" required></textarea><br>
+                  <label for="snippet-tags">Tags (comma-separated):</label><br>
+                  <input type="text" id="snippet-tags" placeholder="e.g. python, api, bugfix"><br>
+                  <button type="submit">Add Snippet</button>
+               </form>
+           <h3>Saved Snippets</h3>
+           <ul id="snippet-list"></ul>
+      </section>
       <section id="standup-section" style="display:none;">Stand-up Generator Content Here</section>
       <section id="analytics-section" style="display:none;">Analytics Content Here</section>
       <section id="askai-section" style="display:none;">Ask AI Content Here</section>
