@@ -105,3 +105,21 @@ footer {
   border-radius: 4px;
   overflow-x: auto;
 }
+
+#standup-section button {
+  padding: 10px 24px;
+  background: #6366f1;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+#standup-section button:hover {
+  background: #4f46e5;
+}
+#standup-result {
+  font-size: 1.1rem;
+  color: #222;
+}
