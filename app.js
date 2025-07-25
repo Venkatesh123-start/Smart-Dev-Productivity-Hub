@@ -1,6 +1,4 @@
-// Placeholder for your JavaScript logic
-console.log('Smart Dev Productivity Hub loaded!');
-
+// --- Navigation logic with section fade-in ---
 const navItems = document.querySelectorAll('.sidebar li');
 const sections = [
   document.getElementById('home-section'),
@@ -12,23 +10,67 @@ const sections = [
 
 navItems.forEach((item, idx) => {
   item.addEventListener('click', () => {
-    // Remove active class from all nav items
     navItems.forEach(nav => nav.classList.remove('active'));
-    // Hide all sections
-    sections.forEach(sec => sec.style.display = 'none');
-    // Activate clicked nav and show corresponding section
+    sections.forEach(sec => {
+      sec.style.display = 'none';
+      sec.classList.remove('animate-fadein');
+    });
     item.classList.add('active');
     sections[idx].style.display = 'block';
+    // Animate section fade-in
+    setTimeout(() => sections[idx].classList.add('animate-fadein'), 10);
+    // Redraw chart if analytics
+    if (idx === 3) drawAnalytics();
   });
 });
 
-// Snippet Manager Logic
+// --- Productivity Tips & Home Feed ---
+const tips = [
+  "Break big tasks into smaller, manageable chunks.",
+  "Use meaningful variable and function names for better readability.",
+  "Regularly review and refactor your code to keep it clean.",
+  "Automate repetitive tasks to save time and reduce errors.",
+  "Document your code and workflows for future reference.",
+  "Take regular breaks to maintain focus and avoid burnout.",
+  "Stay updated with the latest trends in your tech stack.",
+  "Practice prompt engineering to get better AI outputs.",
+  "Collaborate and share knowledge with your peers.",
+  "Leverage AI tools to boost your productivity and learning."
+];
+
+let currentTip = 0;
+const tipDiv = document.getElementById('productivity-tip');
+const nextTipBtn = document.getElementById('next-tip');
+function showTip(idx) {
+  tipDiv.textContent = tips[idx];
+}
+showTip(currentTip);
+nextTipBtn.addEventListener('click', () => {
+  currentTip = (currentTip + 1) % tips.length;
+  showTip(currentTip);
+  tipDiv.classList.remove('animate-fadein');
+  setTimeout(() => tipDiv.classList.add('animate-fadein'), 10);
+});
+
+// --- Show recent snippets on Home ---
+const recentSnippetsList = document.getElementById('recent-snippets');
+function showRecentSnippets() {
+  const snippets = JSON.parse(localStorage.getItem('snippets')) || [];
+  recentSnippetsList.innerHTML = '';
+  snippets.slice(-3).reverse().forEach((snip) => {
+    const li = document.createElement('li');
+    li.innerHTML = `<pre>${snip.code}</pre><small>Tags: ${snip.tags.join(', ')}</small>`;
+    recentSnippetsList.appendChild(li);
+  });
+}
+showRecentSnippets();
+window.addEventListener('storage', showRecentSnippets);
+
+// --- Snippet Manager Logic ---
 const snippetForm = document.getElementById('snippet-form');
 const snippetCode = document.getElementById('snippet-code');
 const snippetTags = document.getElementById('snippet-tags');
 const snippetList = document.getElementById('snippet-list');
-
-// Load snippets from LocalStorage
 function loadSnippets() {
   const snippets = JSON.parse(localStorage.getItem('snippets') || '[]');
   snippetList.innerHTML = '';
@@ -38,9 +80,8 @@ function loadSnippets() {
       <small>Tags: ${snip.tags.join(', ')}</small>`;
     snippetList.appendChild(li);
   });
+  showRecentSnippets();
 }
-
-// Save a new snippet
 snippetForm.addEventListener('submit', function(e) {
   e.preventDefault();
   const code = snippetCode.value.trim();
@@ -53,131 +94,57 @@ snippetForm.addEventListener('submit', function(e) {
   snippetTags.value = '';
   loadSnippets();
 });
-
-// Initial load
 loadSnippets();
 
-// AI Stand-up Generator Logic
+// --- AI Stand-up Generator Logic ---
 const generateStandupBtn = document.getElementById('generate-standup');
 const standupResult = document.getElementById('standup-result');
-
 function generateStandupSummary() {
-  // Get today's snippets (simulate by using all snippets for now)
   const snippets = JSON.parse(localStorage.getItem('snippets') || '[]');
   if (snippets.length === 0) {
-    standupResult.textContent = "No coding activity found for today.";
+    standupResult.innerHTML = "<span style='color:#e11d48;'>No coding activity found for today.</span>";
     return;
   }
-
-  // Simulate prompt engineering & LLM summary
-  let summary = "📝 **Today's Stand-up Summary:**\n";
-  summary += `• You worked on ${snippets.length} code snippet${snippets.length > 1 ? 's' : ''} today.\n`;
+  let summary = "📝 <b>Today's Stand-up Summary:</b><br>";
+  summary += `• You worked on <b>${snippets.length}</b> code snippet${snippets.length > 1 ? 's' : ''} today.<br>`;
   const tags = [...new Set(snippets.flatMap(s => s.tags))].filter(Boolean);
   if (tags.length) {
-    summary += `• Main topics: ${tags.join(', ')}.\n`;
+    summary += `• Main topics: <b>${tags.join(', ')}</b>.<br>`;
   }
   summary += "• Keep up the great work! 🚀";
-
-  // Display summary (formatting for HTML)
-  standupResult.innerHTML = summary.replace(/\n/g, '<br>');
+  standupResult.innerHTML = summary;
+  standupResult.classList.remove('animate-fadein');
+  setTimeout(() => standupResult.classList.add('animate-fadein'), 10);
 }
-
 generateStandupBtn.addEventListener('click', generateStandupSummary);
 
-// Code Explainer & Commenter Logic
-const explainForm = document.getElementById('explain-form');
-const explainCode = document.getElementById('explain-code');
-const explainResult = document.getElementById('explain-result');
-
-explainForm.addEventListener('submit', function(e) {
-  e.preventDefault();
-  const code = explainCode.value.trim();
-  if (!code) {
-    explainResult.textContent = "Please paste some code to explain.";
-    return;
-  }
-
-  // Simulate AI explanation (you can enhance this logic)
-  let explanation = "🔍 **AI Explanation:**\n";
-  if (code.includes('for') && code.includes('range')) {
-    explanation += "This appears to be a Python for-loop iterating over a range of values.";
-  } else if (code.includes('function') || code.includes('def')) {
-    explanation += "This is a function definition. The code inside defines its behavior.";
-  } else if (code.includes('if') && code.includes('else')) {
-    explanation += "This code uses conditional logic to execute different branches.";
-  } else {
-    explanation += "This code snippet performs a specific task. Please provide more context for a detailed explanation.";
-  }
-
-  explainResult.innerHTML = explanation.replace(/\n/g, '<br>');
-  explainCode.value = '';
-});
-
-// Productivity Tips & Learning Feed Logic
-const tips = [
-  "Break big tasks into smaller, manageable chunks.",
-  "Use meaningful variable and function names for better readability.",
-  "Regularly review and refactor your code to keep it clean.",
-  "Automate repetitive tasks to save time and reduce errors.",
-  "Document your code and workflows for future reference.",
-  "Take regular breaks to maintain focus and avoid burnout.",
-  "Leverage AI tools like Pieces Copilot to boost productivity.",
-  "Stay updated with the latest trends in your tech stack.",
-  "Practice prompt engineering to get better AI outputs.",
-  "Collaborate and share knowledge with your peers."
-];
-
-let currentTip = 0;
-const tipDiv = document.getElementById('productivity-tip');
-const nextTipBtn = document.getElementById('next-tip');
-
-function showTip(idx) {
-  tipDiv.textContent = tips[idx];
-}
-showTip(currentTip);
-
-nextTipBtn.addEventListener('click', () => {
-  currentTip = (currentTip + 1) % tips.length;
-  showTip(currentTip);
-});
-
-// Show recent snippets on Home
-const recentSnippetsList = document.getElementById('recent-snippets');
-function showRecentSnippets() {
+// --- Analytics Section (Chart.js) ---
+let chart;
+function drawAnalytics() {
+  const ctx = document.getElementById('snippets-chart').getContext('2d');
   const snippets = JSON.parse(localStorage.getItem('snippets') || '[]');
-  recentSnippetsList.innerHTML = '';
-  snippets.slice(-3).reverse().forEach(snip => {
-    const li = document.createElement('li');
-    li.innerHTML = `<pre>${snip.code}</pre><small>Tags: ${snip.tags.join(', ')}</small>`;
-    recentSnippetsList.appendChild(li);
-  });
-}
-showRecentSnippets();
-window.addEventListener('storage', showRecentSnippets); // Update if LocalStorage changes
-
-// Analytics (Charts/Visualization) Logic
-function renderAnalytics() {
-  const snippets = JSON.parse(localStorage.getItem('snippets') || '[]');
+  // Count tags
   const tagCounts = {};
   snippets.forEach(snip => {
     snip.tags.forEach(tag => {
-      if (tag) tagCounts[tag] = (tagCounts[tag] || 0) + 1;
+      if (!tagCounts[tag]) tagCounts[tag] = 0;
+      tagCounts[tag]++;
     });
   });
-
-  // Prepare data for Chart.js
-  const ctx = document.getElementById('snippets-chart').getContext('2d');
-  // Destroy previous chart if exists
-  if (window.snippetsChart) window.snippetsChart.destroy();
-
-  window.snippetsChart = new Chart(ctx, {
+  const labels = Object.keys(tagCounts);
+  const data = Object.values(tagCounts);
+  if (chart) chart.destroy();
+  chart = new Chart(ctx, {
     type: 'bar',
     data: {
-      labels: Object.keys(tagCounts),
+      labels: labels.length ? labels : ['No tags'],
       datasets: [{
-        label: 'Tag Frequency',
-        data: Object.values(tagCounts),
-        backgroundColor: '#6366f1'
+        label: 'Snippets per Tag',
+        data: data.length ? data : [0],
+        backgroundColor: [
+          '#6366f1', '#38bdf8', '#fbc2eb', '#a1c4fd', '#10b981', '#f59e42', '#e11d48'
+        ],
+        borderRadius: 8
       }]
     },
     options: {
@@ -190,15 +157,59 @@ function renderAnalytics() {
       }
     }
   });
-
   // Analytics summary
-  const summaryDiv = document.getElementById('analytics-summary');
-  summaryDiv.innerHTML = `
-    <strong>Total snippets:</strong> ${snippets.length}<br>
-    <strong>Unique tags:</strong> ${Object.keys(tagCounts).length}<br>
-    <strong>Most used tag:</strong> ${Object.entries(tagCounts).sort((a,b)=>b[1]-a[1])[0]?.[0] || 'N/A'}
-  `;
+  document.getElementById('analytics-summary').innerHTML =
+    `<b>Total snippets:</b> ${snippets.length}<br>` +
+    `<b>Unique tags:</b> ${labels.length}<br>` +
+    `<b>Most used tag:</b> ${Object.entries(tagCounts).sort((a,b)=>b[1]-a[1])[0]?.[0] || 'N/A'}`;
 }
 
-// Render analytics when Analytics section is shown
-document.getElementById('nav-analytics').addEventListener('click', renderAnalytics);
+// --- Ask AI (Code Explainer & Commenter) ---
+const explainForm = document.getElementById('explain-form');
+const explainCode = document.getElementById('explain-code');
+const explainResult = document.getElementById('explain-result');
+
+explainForm.addEventListener('submit', function(e) {
+  e.preventDefault();
+  const code = explainCode.value.trim();
+  if (!code) {
+    explainResult.innerHTML = "<span style='color:#e11d48;'>Please paste your code above.</span>";
+    return;
+  }
+  explainResult.innerHTML = "<em><i class='fa-solid fa-spinner fa-spin'></i> Analyzing code with AI...</em>";
+  setTimeout(() => {
+    // Simulate more helpful, context-aware AI output
+    let explanation = '';
+    // Python function
+    if (code.match(/def\s+\w+\(/)) {
+      explanation = "This is a Python function definition. The function name and parameters are parsed, and the <code>return</code> statement outputs the result. Consider adding docstrings for clarity and handling edge cases.";
+    }
+    // JavaScript function
+    else if (code.match(/function\s+\w+\(/)) {
+      explanation = "This is a JavaScript function definition. The function encapsulates reusable logic. Make sure to handle input validation and edge cases.";
+    }
+    // For loop
+    else if (code.match(/for\s*\(.*\)/) || code.match(/for\s+\w+\s+in/)) {
+      explanation = "This code contains a loop. Ensure your loop variable is correctly initialized and that you avoid infinite loops. Loops are useful for iterating over arrays, lists, or ranges.";
+    }
+    // Print statement
+    else if (code.includes('print')) {
+      explanation = "This code uses the <code>print()</code> function to display output to the console. If you want to print a variable, make sure it's defined above.";
+    }
+    // If/else
+    else if (code.match(/if\s*\(.*\)/) || code.match(/if\s+.*:/)) {
+      explanation = "This code uses conditional logic to execute different branches based on a condition. Ensure your conditions are correct and cover all necessary cases.";
+    }
+    // Class
+    else if (code.match(/class\s+\w+/)) {
+      explanation = "This is a class definition, which is used to create objects with properties and methods. Classes help organize code and support object-oriented programming.";
+    }
+    // Default
+    else {
+      explanation = "This code snippet performs a specific task. For a more detailed explanation, please provide additional context or specify what you want to understand.";
+    }
+    explainResult.innerHTML = `<strong><i class="fa-solid fa-brain"></i> AI Explanation:</strong><br>${explanation}`;
+    explainResult.classList.remove('animate-fadein');
+    setTimeout(() => explainResult.classList.add('animate-fadein'), 10);
+  }, 900);
+});
