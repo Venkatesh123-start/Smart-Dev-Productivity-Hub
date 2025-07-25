@@ -3,76 +3,95 @@
 <head>
   <meta charset="UTF-8">
   <title>Smart Dev Productivity Hub</title>
-  <link rel="stylesheet" href="style.css">
-  <!-- Optional: Google Fonts and FontAwesome -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css?family=Inter:400,700&display=swap" rel="stylesheet">
+  <!-- Chart.js for Analytics -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- FontAwesome for icons (optional, for modern look) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div class="container">
     <!-- Header -->
     <header>
-      <h1>Smart Dev Productivity Hub</h1>
+      <h1>
+        <i class="fa-solid fa-robot"></i>
+        Smart Dev Productivity Hub
+      </h1>
     </header>
 
     <!-- Sidebar Navigation -->
     <nav class="sidebar">
       <ul>
-        <li id="nav-home" class="active">Home</li>
-        <li id="nav-snippets">Snippet Manager</li>
-        <li id="nav-standup">Stand-up Generator</li>
-        <li id="nav-analytics">Analytics</li>
-        <li id="nav-askai">Ask AI</li>
+        <li id="nav-home" class="active"><i class="fa-solid fa-house"></i> Home</li>
+        <li id="nav-snippets"><i class="fa-solid fa-code"></i> Snippet Manager</li>
+        <li id="nav-standup"><i class="fa-solid fa-list-check"></i> Stand-up Generator</li>
+        <li id="nav-analytics"><i class="fa-solid fa-chart-bar"></i> Analytics</li>
+        <li id="nav-askai"><i class="fa-solid fa-brain"></i> Ask AI</li>
       </ul>
     </nav>
 
     <!-- Main Content Area -->
     <main class="main-content">
+      <!-- Home Section -->
       <section id="home-section">
-  	  <h2>Welcome to Smart Dev Productivity Hub!</h2>
-          <div id="productivity-tip" style="margin: 24px 0; background: #fff; border-radius: 8px; padding: 16px; min-height: 60px; font-size: 1.1rem;"></div>
-          <button id="next-tip" style="padding: 8px 20px; background: #6366f1; color: #fff; border: none; border-radius: 6px; font-size: 1rem; cursor: pointer;">Show Next Tip</button>
-          <div style="margin-top: 32px;">
-          	<h3>Recent Snippets</h3>
-          	<ul id="recent-snippets"></ul>
-          </div>
+        <h2>Welcome to <span class="gradient-text">Smart Dev Productivity Hub</span>!</h2>
+        <div id="productivity-tip" class="card animate-fadein"></div>
+        <button id="next-tip" class="primary-btn animate-pop">Show Next Tip</button>
+        <div style="margin-top: 32px;">
+          <h3><i class="fa-solid fa-clock-rotate-left"></i> Recent Snippets</h3>
+          <ul id="recent-snippets"></ul>
+        </div>
       </section>
+
+      <!-- Snippet Manager Section -->
       <section id="snippets-section" style="display:none;">
-          <h2>Snippet Manager</h2>
-              <form id="snippet-form">
-                  <label for="snippet-code">Code Snippet:</label><br>
-                  <textarea id="snippet-code" rows="4" cols="50" required></textarea><br>
-                  <label for="snippet-tags">Tags (comma-separated):</label><br>
-                  <input type="text" id="snippet-tags" placeholder="e.g. python, api, bugfix"><br>
-                  <button type="submit">Add Snippet</button>
-              </form>
-          <h3>Saved Snippets</h3>
-          <ul id="snippet-list"></ul>
+        <h2><i class="fa-solid fa-code"></i> Snippet Manager</h2>
+        <form id="snippet-form" class="animate-slidein">
+          <label for="snippet-code">Code Snippet:</label><br>
+          <textarea id="snippet-code" rows="4" cols="50" required></textarea><br>
+          <label for="snippet-tags">Tags (comma-separated):</label><br>
+          <input type="text" id="snippet-tags" placeholder="e.g. python, api, bugfix"><br>
+          <button type="submit" class="primary-btn">Add Snippet</button>
+        </form>
+        <h3>Saved Snippets</h3>
+        <ul id="snippet-list"></ul>
       </section>
+
+      <!-- Stand-up Generator Section -->
       <section id="standup-section" style="display:none;">
-              <h2>AI Stand-up Generator</h2>
-                  <button id="generate-standup">Generate Today’s Stand-up Summary</button>
-                  <div id="standup-result" style="margin-top:20px; background:#fff; border-radius:8px; padding:16px; min-height:60px;"></div>
+        <h2><i class="fa-solid fa-list-check"></i> AI Stand-up Generator</h2>
+        <button id="generate-standup" class="primary-btn animate-pop">Generate Today’s Stand-up Summary</button>
+        <div id="standup-result" class="card animate-fadein" style="margin-top:20px; min-height:60px;"></div>
       </section>
+
+      <!-- Analytics Section -->
       <section id="analytics-section" style="display:none;">
-  	      <h2>Analytics</h2>
-  		  <canvas id="snippets-chart" width="400" height="200"></canvas>
-  		  <div id="analytics-summary" style="margin-top:20px;"></div>
+        <h2><i class="fa-solid fa-chart-bar"></i> Analytics</h2>
+        <canvas id="snippets-chart" width="400" height="200"></canvas>
+        <div id="analytics-summary" style="margin-top:20px;"></div>
       </section>
+
+      <!-- Ask AI Section -->
       <section id="askai-section" style="display:none;">
-  	      <h2>Code Explainer & Commenter</h2>
-        	  <form id="explain-form">
-                     <label for="explain-code">Paste your code here:</label><br>
-                     <textarea id="explain-code" rows="4" cols="50" required></textarea><br>
-                     <button type="submit">Explain Code</button>
-                  </form>
-              <div id="explain-result" style="margin-top:20px; background:#fff; border-radius:8px; padding:16px; min-height:60px;"></div>
+        <h2><i class="fa-solid fa-brain"></i> Code Explainer & Commenter</h2>
+        <form id="explain-form" class="animate-slidein">
+          <label for="explain-code">Paste your code here:</label><br>
+          <textarea id="explain-code" rows="4" cols="50" required></textarea><br>
+          <button type="submit" class="primary-btn">Explain Code</button>
+        </form>
+        <div id="explain-result" class="card animate-fadein" style="margin-top:20px; min-height:60px;"></div>
       </section>
     </main>
 
     <!-- Footer -->
     <footer>
-      <span>Crafted with 💡 by B Venkatesh | Smart Dev Productivity Hub</span>
+      <span>
+        <i class="fa-solid fa-lightbulb"></i>
+        Crafted with passion by <b>B Venkatesh</b> | <span class="gradient-text">Smart Dev Productivity Hub</span> &copy; 2025
+      </span>
     </footer>
   </div>
   <script src="app.js"></script>
